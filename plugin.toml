@@ -1,0 +1,44 @@
+description = "Which program opens which kind of file — decided here, run by the tool"
+runtime     = "process"
+exec        = "./target/release/lvim-fuzzy-plugin-open"
+build       = "cargo build --release"
+hosts       = ["lvim-fuzzy-commander", "lvim-fuzzy-cli", "lvim-fuzzy-picker"]
+version     = "0.1.1"
+license     = "BSD-3-Clause"
+
+# EVERYTHING here is configuration. Override any key in ~/.config/lvim-plugins/lvim-fuzzy-plugin-open.toml (every
+# tool) or in one tool's own config under [plugins.lvim-fuzzy-plugin-open] (that tool only).
+
+# TYPES: a group of files and the engine that opens it. A group matches by `ext`, `name`, `mime` ("image/*") and /
+# or `kind` ("dir", "binary", "text"); every key that is given must hold. The most specific group wins (`ext` /
+# `name` / `mime`, then `kind`, then `priority`). A group with no key at all matches every file.
+[config.types.directories]
+kind   = ["dir"]
+engine = "editor"
+[config.types.text]
+kind   = ["text"]
+engine = "editor"        # the tool's own editor (lvc and lfz start it, the Neovim picker opens a buffer)
+[config.types.other]
+engine = "system"        # everything else: the desktop's opener (xdg-open)
+
+# Your own, e.g. pictures in imv and PDFs in zathura:
+#   [config.types.pictures]
+#   mime   = ["image/*"]
+#   engine = "imv"
+#   [config.types.pdf]
+#   ext    = ["pdf"]
+#   engine = "zathura"
+#   [config.engines.imv]
+#   kind    = "command"
+#   command = "imv {}"            # {} = the file, quoted for the shell; without it the file is appended
+#   [config.engines.zathura]
+#   kind    = "command"
+#   command = "zathura"
+
+# ENGINES. Built in, no definition needed: editor, system (xdg-open), host (pass: the tool's own way).
+# Your own are `kind = "command"`; the tool starts them detached (a GUI program). The program must be on the PATH:
+# if it is not, the tool says so and opens nothing.
+
+# One catch-all provider: the choice is the configuration above, not this file.
+[open.any]
+priority = 50

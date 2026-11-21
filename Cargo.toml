@@ -1,0 +1,32 @@
+[package]
+name = "lvim-fuzzy-plugin-open"
+version = "0.1.1"
+edition = "2024"
+license = "BSD-3-Clause"
+description = "The open plugin of the lvim fuzzy tools: it decides which program opens which kind of file (an editor, the system opener, a command of your own); the tool runs it"
+repository = "https://github.com/lvim-tech/lvim-fuzzy-plugin-open"
+rust-version = "1.85"
+
+[lib]
+name = "lvim_fuzzy_plugin_open"
+path = "src/lib.rs"
+
+[[bin]]
+name = "lvim-fuzzy-plugin-open"
+path = "src/main.rs"
+
+[dependencies]
+# the plugin host: the shared file types (`types`), and the bundled install (the plugin ships inside lfz and lvc)
+lvim-fuzzy-plugin = { path = "../lvim-fuzzy-plugin", default-features = false }
+serde_json = "1"
+
+[dev-dependencies]
+toml = "0.9"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+strip = true
+
+[workspace]
