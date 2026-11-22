@@ -5,9 +5,9 @@ The **open** plugin of the lvim fuzzy tools (`lvim-fuzzy-commander`, `lvim-fuzzy
 decides is its configuration, so one rule serves all three tools — and each tool may override it for itself.
 
 It is a `process` plugin (JSON lines) of the `lvim-fuzzy-plugin` host and ships **inside** `lvim-fuzzy` and
-`lvim-fuzzy-commander`: whichever starts first writes `~/.config/lvim-plugins/lvim-fuzzy-plugin-open/plugin.toml`, so there
-is nothing to install (the Neovim picker goes through `lvim-fuzzy`). A `plugin.toml` of your own with the same name is
-never touched.
+`lvim-fuzzy-commander`: a tool writes `~/.config/lvim-plugins/lvim-fuzzy-plugin-open/plugin.toml` only when its config says so —
+`[plugins.lvim-fuzzy-plugin-open] install = "bundled"` (or the path of a program that answers as the plugin); the Neovim picker goes through
+`lvim-fuzzy`. A `plugin.toml` of your own with the same name is never touched.
 
 ## What it answers
 

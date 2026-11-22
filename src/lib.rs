@@ -92,12 +92,11 @@ pub fn run_if_asked(args: &[String]) {
     }
 }
 
-/// Make sure the plugin is installed in the shared plugins directory `root` for the running tool (see
-/// `lvim_fuzzy_plugin::bundled`). Silent: a directory that cannot be written just means no open plugin.
-pub fn ensure_installed(root: &Path) {
-    let Ok(exe) = std::env::current_exe() else { return };
+/// Write the plugin's `plugin.toml` into the shared plugins directory `root`, with `exe` answering as the plugin (see
+/// `lvim_fuzzy_plugin::bundled`): a tool calls this only when its config says `[plugins.lvim-fuzzy-plugin-open] install = …`. Silent: a directory that cannot be written just means no open plugin.
+pub fn ensure_installed(root: &Path, exe: &Path) {
     let b = lvim_fuzzy_plugin::bundled::Bundled { name: "lvim-fuzzy-plugin-open", version: env!("CARGO_PKG_VERSION"), manifest: MANIFEST };
-    let _ = lvim_fuzzy_plugin::bundled::ensure(root, &b, &exe, &PLUGIN_ARGS.join(" "));
+    let _ = lvim_fuzzy_plugin::bundled::ensure(root, &b, exe, &PLUGIN_ARGS.join(" "));
 }
 
 #[cfg(test)]
