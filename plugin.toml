@@ -12,6 +12,10 @@ license     = "BSD-3-Clause"
 # TYPES: a group of files and the engine that opens it. A group matches by `ext`, `name`, `mime` ("image/*") and /
 # or `kind` ("dir", "binary", "text"); every key that is given must hold. The most specific group wins (`ext` /
 # `name` / `mime`, then `kind`, then `priority`). A group with no key at all matches every file.
+# The engines that need no definition: [name, the program it runs, or ""] (the tools list them in `--list`).
+[config]
+builtin_engines = [["editor", ""], ["system", "xdg-open"], ["host", ""]]
+
 [config.types.directories]
 kind   = ["dir"]
 engine = "editor"

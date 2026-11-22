@@ -9,6 +9,22 @@ It is a `process` plugin (JSON lines) of the `lvim-fuzzy-plugin` host and ships 
 `[plugins.lvim-fuzzy-plugin-open] install = "bundled"` (or the path of a program that answers as the plugin); the Neovim picker goes through
 `lvim-fuzzy`. A `plugin.toml` of your own with the same name is never touched.
 
+
+## Installation
+
+A plugin is a program of its own — no tool carries it. `./scripts/install.sh` builds it (`cargo build --release`), puts the program in
+`~/.local/bin/` and writes its `plugin.toml` (with `exec` pointing at that program) into the shared plugins directory
+`~/.config/lvim-plugins/lvim-fuzzy-plugin-open/`; lvc, lfz and the Neovim picker find it there. The old `install = "bundled"` lines of a tool's
+config are gone (a tool refuses to start with one).
+
+## Where it is used
+
+| App | What for |
+|---|---|
+| **lvc** | Enter / `oe` on a file: which program opens it (editor, `xdg-open`, an image viewer …) |
+| **lfz** | Enter on a file when lfz opens it: the same decision |
+| **Neovim picker** | opening the chosen file: the same decision |
+
 ## What it answers
 
 One `open` instruction (`lvim_fuzzy_ui::open` reads it):
@@ -79,7 +95,6 @@ so lvc may open a PDF in `zathura` while lfz uses `evince`. (The old `[open]` ta
 ## Build
 
 `cargo build --release`; `plugin.toml`'s `exec` then points at `target/release/lvim-fuzzy-plugin-open`
-(`lvim-fuzzy-plugin install` does both for a plugin from git). Not needed for use: the tools carry the same code.
 
 ## License
 

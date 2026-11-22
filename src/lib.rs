@@ -73,35 +73,11 @@ fn run_command(engine: &str, template: &str, path: &Path) -> Value {
     json!({"op": "open", "action": "exec", "cmd": lvim_fuzzy_plugin::types::expand(template, path)})
 }
 
-/// The engines that need no definition, each with the program it runs, if any (for `--list`: is it installed?).
-pub const BUILTIN_ENGINES: [(&str, Option<&str>); 3] = [("editor", None), ("system", Some("xdg-open")), ("host", None)];
-
-// ----- shipping inside the tools -----
-
-/// The arguments a tool is started with to BE this plugin: `<tool> --lvim-plugin open`.
-pub const PLUGIN_ARGS: [&str; 2] = ["--lvim-plugin", "open"];
-
-/// The plugin's `plugin.toml` as shipped.
-pub const MANIFEST: &str = include_str!("../plugin.toml");
-
-/// For a tool's `main`: if it was started to be this plugin (`--lvim-plugin open`), be it (never returns).
-pub fn run_if_asked(args: &[String]) {
-    if args.first().map(String::as_str) == Some(PLUGIN_ARGS[0]) && args.get(1).map(String::as_str) == Some(PLUGIN_ARGS[1]) {
-        run();
-        std::process::exit(0);
-    }
-}
-
-/// Write the plugin's `plugin.toml` into the shared plugins directory `root`, with `exe` answering as the plugin (see
-/// `lvim_fuzzy_plugin::bundled`): a tool calls this only when its config says `[plugins.lvim-fuzzy-plugin-open] install = …`. Silent: a directory that cannot be written just means no open plugin.
-pub fn ensure_installed(root: &Path, exe: &Path) {
-    let b = lvim_fuzzy_plugin::bundled::Bundled { name: "lvim-fuzzy-plugin-open", version: env!("CARGO_PKG_VERSION"), manifest: MANIFEST };
-    let _ = lvim_fuzzy_plugin::bundled::ensure(root, &b, exe, &PLUGIN_ARGS.join(" "));
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    const MANIFEST: &str = include_str!("../plugin.toml");
 
     fn tmp(name: &str) -> std::path::PathBuf {
         let d = std::env::temp_dir().join(format!("lvim-fuzzy-plugin-open-{name}-{}", std::process::id()));
