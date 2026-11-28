@@ -52,7 +52,9 @@ pub fn answer(ctx: &Value) -> Result<Value, String> {
             Some(e) if e.get("kind").and_then(Value::as_str).unwrap_or("command") == "command" => {
                 run_command(name, e.get("command").and_then(Value::as_str).unwrap_or(""), path)
             }
-            Some(e) => json!({"op": "open", "missing": [format!("engines.{name}: kind `{}` — only \"command\" can be defined", e.get("kind").and_then(Value::as_str).unwrap_or(""))]}),
+            Some(e) => {
+                json!({"op": "open", "missing": [format!("engines.{name}: kind `{}` — only \"command\" can be defined", e.get("kind").and_then(Value::as_str).unwrap_or(""))]})
+            }
             None => json!({
                 "op": "open",
                 "missing": [format!("types.{group}: engine \"{name}\" is neither built in (editor, system, host) nor defined in [engines.{name}]")],
