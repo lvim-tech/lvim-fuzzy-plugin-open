@@ -79,10 +79,8 @@ mod tests {
 
     const MANIFEST: &str = include_str!("../plugin.toml");
 
-    fn tmp(name: &str) -> std::path::PathBuf {
-        let d = std::env::temp_dir().join(format!("lvim-fuzzy-plugin-open-{name}-{}", std::process::id()));
-        std::fs::create_dir_all(&d).unwrap();
-        d
+    fn tmp(name: &str) -> lvim_fuzzy_plugin::testutil::TempDir {
+        lvim_fuzzy_plugin::testutil::TempDir::new("lvim-fuzzy-plugin-open", name)
     }
 
     /// The plugin's own default configuration (plugin.toml's [config]) with `over` laid over it.

@@ -5,7 +5,7 @@ edition = "2024"
 license = "BSD-3-Clause"
 description = "The open plugin of the lvim fuzzy tools: it decides which program opens which kind of file (an editor, the system opener, a command of your own); the tool runs it"
 repository = "https://github.com/lvim-tech/lvim-fuzzy-plugin-open"
-rust-version = "1.85"
+rust-version = "1.88"
 
 [lib]
 name = "lvim_fuzzy_plugin_open"
